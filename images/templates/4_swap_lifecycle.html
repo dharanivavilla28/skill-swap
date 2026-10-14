@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>5.5.3 Swap Lifecycle State Diagram</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 p-8 min-h-screen flex items-center justify-center">
+  <div class="max-w-[1360px] w-full bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl space-y-6">
+    
+    <!-- Header -->
+    <div class="flex items-center justify-between border-b border-slate-800 pb-5">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-bold uppercase tracking-wider mb-2">
+          <span>Section 5.5.3 • State Machine Specification</span>
+        </div>
+        <h1 class="text-3xl font-black text-white tracking-tight flex items-center gap-3">
+          <span>Swap Lifecycle & Escrow State Flowchart</span>
+          <span class="text-xs font-mono font-medium px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 border border-slate-700">Deterministic FSM</span>
+        </h1>
+        <p class="text-sm text-slate-400 mt-1">Lifecycle states from peer request initiation to mutual confirmation, escrow release, and feedback.</p>
+      </div>
+      <div class="flex items-center gap-4 text-xs font-mono text-slate-400">
+        <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>Non-Cash Escrow Guarded</span>
+      </div>
+    </div>
+
+    <!-- State Diagram Layout -->
+    <div class="space-y-6 py-2">
+      
+      <!-- Stage 1: Initiation to Pending -->
+      <div class="grid grid-cols-12 gap-4 items-center">
+        <!-- Start Node -->
+        <div class="col-span-3 bg-slate-800/80 border border-slate-700 rounded-2xl p-4 text-center">
+          <div class="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Trigger: Learner Action</div>
+          <div class="text-sm font-bold text-white mt-1">Initiate Swap Proposal</div>
+          <p class="text-[11px] text-slate-400 mt-1">Selects provider, skill, duration (30/45/60 min), and learning goal</p>
+        </div>
+
+        <div class="col-span-1 text-center font-bold text-slate-500 text-xl">➔</div>
+
+        <!-- PENDING State -->
+        <div class="col-span-4 bg-amber-950/40 border-2 border-amber-500/50 rounded-2xl p-4 text-center relative">
+          <div class="inline-block px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold font-mono uppercase">
+            State 1: PENDING
+          </div>
+          <div class="text-sm font-bold text-amber-200 mt-2">Escrow Lock Placed</div>
+          <p class="text-[11px] text-slate-300 mt-1">Credits held: <strong>0.50 / 0.75 / 1.00 CR</strong> from Learner wallet. Awaiting mentor response.</p>
+        </div>
+
+        <div class="col-span-1 text-center font-bold text-slate-500 text-xl">➔</div>
+
+        <!-- Decision Gate: Provider Decision -->
+        <div class="col-span-3 bg-slate-800/80 border border-cyan-500/30 rounded-2xl p-4 text-center">
+          <div class="text-[10px] font-mono text-cyan-400 uppercase">Provider Decision Gate</div>
+          <div class="text-sm font-bold text-white mt-1">Accept or Decline?</div>
+          <div class="mt-2 flex justify-center gap-2 text-[10px] font-mono">
+            <span class="px-2 py-0.5 rounded bg-emerald-900/60 text-emerald-300 border border-emerald-500/30">Accept</span>
+            <span class="px-2 py-0.5 rounded bg-rose-900/60 text-rose-300 border border-rose-500/30">Decline</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Branching Paths -->
+      <div class="grid grid-cols-12 gap-4">
+        <!-- Rejection Path (Downwards left) -->
+        <div class="col-span-4 bg-rose-950/30 border-2 border-rose-500/40 rounded-2xl p-4 space-y-1">
+          <div class="flex items-center justify-between">
+            <span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 text-[10px] font-bold font-mono uppercase">
+              State: DECLINED / CANCELLED
+            </span>
+            <span class="text-[10px] font-mono text-rose-400">Terminal</span>
+          </div>
+          <div class="text-xs font-bold text-rose-200 mt-1">Automatic Escrow Refund</div>
+          <p class="text-[11px] text-slate-400 leading-relaxed">
+            Provider declines or session expires unaccepted. 100% of held credits immediately refunded back to Learner's ledger with zero penalty.
+          </p>
+        </div>
+
+        <!-- Acceptance Path (Downwards right) -->
+        <div class="col-span-8 grid grid-cols-2 gap-4">
+          <!-- ACCEPTED State -->
+          <div class="bg-sky-950/30 border-2 border-sky-500/50 rounded-2xl p-4 space-y-1">
+            <div class="px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 text-[10px] font-bold font-mono uppercase inline-block">
+              State 2: ACCEPTED
+            </div>
+            <div class="text-xs font-bold text-sky-200 mt-1">Exchange Terms Locked</div>
+            <p class="text-[11px] text-slate-400 leading-relaxed">
+              Provider agrees to mentor. Credits remain secured in escrow. In-app messaging and scheduling unlocked.
+            </p>
+          </div>
+
+          <!-- SCHEDULED State -->
+          <div class="bg-indigo-950/40 border-2 border-indigo-500/50 rounded-2xl p-4 space-y-1">
+            <div class="px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-[10px] font-bold font-mono uppercase inline-block">
+              State 3: SCHEDULED
+            </div>
+            <div class="text-xs font-bold text-indigo-200 mt-1">Time & Mode Confirmed</div>
+            <p class="text-[11px] text-slate-400 leading-relaxed">
+              Mutually agreeable time slot locked into campus calendar. Location designated (Campus Commons or Zoom call).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Execution to Completion -->
+      <div class="grid grid-cols-12 gap-4 items-center">
+        <!-- IN_PROGRESS State -->
+        <div class="col-span-4 bg-purple-950/30 border-2 border-purple-500/50 rounded-2xl p-4">
+          <div class="px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 text-[10px] font-bold font-mono uppercase inline-block">
+            State 4: IN_PROGRESS
+          </div>
+          <div class="text-xs font-bold text-purple-200 mt-1">Active Mentoring Session</div>
+          <p class="text-[11px] text-slate-400 mt-1">
+            Live 30-60 min skill exchange takes place. Both participants access active swap room and shared resources.
+          </p>
+        </div>
+
+        <div class="col-span-1 text-center font-bold text-slate-500 text-xl">➔</div>
+
+        <!-- Dual-Signoff Gate -->
+        <div class="col-span-3 bg-slate-800 border-2 border-teal-500/40 rounded-2xl p-4 text-center">
+          <div class="text-[10px] font-mono text-teal-400 uppercase">Dual-Confirmation Gate</div>
+          <div class="text-xs font-bold text-white mt-1">Mutual Completion Signoff</div>
+          <div class="mt-2 space-y-1 text-[10px] text-slate-300">
+            <div class="flex items-center justify-between px-2 py-0.5 rounded bg-slate-900">
+              <span>Learner Confirmation:</span>
+              <span class="text-emerald-400 font-bold">Confirmed ✓</span>
+            </div>
+            <div class="flex items-center justify-between px-2 py-0.5 rounded bg-slate-900">
+              <span>Mentor Confirmation:</span>
+              <span class="text-emerald-400 font-bold">Confirmed ✓</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-span-1 text-center font-bold text-slate-500 text-xl">➔</div>
+
+        <!-- COMPLETED & SETTLED State -->
+        <div class="col-span-3 bg-emerald-950/40 border-2 border-emerald-500/60 rounded-2xl p-4 text-center">
+          <div class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold font-mono uppercase inline-block">
+            State 5: COMPLETED & SETTLED
+          </div>
+          <div class="text-xs font-bold text-emerald-200 mt-1">Escrow Credit Release</div>
+          <p class="text-[10px] text-slate-300 mt-1">
+            Credits transferred to Mentor wallet. 1-5★ Rating & Review submitted to Campus Trust Index.
+          </p>
+        </div>
+      </div>
+
+      <!-- Dispute / Exception Sub-bar -->
+      <div class="rounded-xl border border-orange-500/30 bg-orange-950/20 p-3 flex items-center justify-between text-xs text-orange-200">
+        <div class="flex items-center gap-2">
+          <span class="text-orange-400 font-bold">⚠️ Exception Flow: State DISPUTED</span>
+          <span class="text-slate-400">• If session fails or participant no-shows, escrow remains frozen and is referred to campus peer mediation.</span>
+        </div>
+        <span class="text-[10px] font-mono bg-orange-900/50 text-orange-300 px-2 py-0.5 rounded">Mediation Resolution SLA: 24h</span>
+      </div>
+
+    </div>
+
+    <!-- Footer metadata -->
+    <div class="flex items-center justify-between text-[11px] text-slate-500 border-t border-slate-800 pt-3">
+      <span>SkillSwap Finite State Machine (FSM) • Non-Cash Time Banking Security Model</span>
+      <span class="font-mono">Figure 5.5.3: Swap Lifecycle State Machine</span>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,221 @@
+// SkillSwap Prisma Schema (PostgreSQL Production Target)
+// To use: copy this to prisma/schema.prisma and set DATABASE_URL="postgresql://..."
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                   String            @id @default(cuid())
+  email                String            @unique
+  passwordHash         String
+  name                 String
+  college              String            @default("Metro State University")
+  course               String?
+  year                 String?
+  bio                  String?
+  interests            String?
+  availabilityJson     String?
+  preferredFormat      String            @default("BOTH")
+  verificationStatus   String            @default("UNVERIFIED")
+  trustScore           Float             @default(0.5)
+  creditBalance        Float             @default(5.0)
+  totalCreditsEarned   Float             @default(0.0)
+  totalCreditsSpent    Float             @default(0.0)
+  avatarInitial        String?
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+
+  userSkills           UserSkill[]
+  requestedSwaps       Swap[]            @relation("RequesterSwaps")
+  providedSwaps        Swap[]            @relation("ProviderSwaps")
+  creditTransactions   CreditTransaction[]
+  givenRatings         Rating[]          @relation("GivenRatings")
+  receivedRatings      Rating[]          @relation("ReceivedRatings")
+  sentMessages         Message[]         @relation("SentMessages")
+  receivedMessages     Message[]         @relation("ReceivedMessages")
+  notifications        Notification[]
+  verificationRequests VerificationRequest[]
+  unmetRequests        UnmetSkillRequest[]
+
+  @@index([email])
+  @@index([college])
+}
+
+model Skill {
+  id            String      @id @default(cuid())
+  canonicalName String      @unique
+  category      String
+  description   String?
+  createdAt     DateTime    @default(now())
+
+  userSkills    UserSkill[]
+  swaps         Swap[]
+
+  @@index([category])
+  @@index([canonicalName])
+}
+
+model UserSkill {
+  id          String   @id @default(cuid())
+  userId      String
+  skillId     String
+  type        String   // "OFFERED" or "WANTED"
+  proficiency String   @default("INTERMEDIATE")
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skill       Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, skillId, type])
+  @@index([userId])
+  @@index([skillId])
+  @@index([type])
+}
+
+model Swap {
+  id                 String             @id @default(cuid())
+  requesterId        String
+  providerId         String
+  skillId            String
+  learningGoal       String
+  sessionFormat      String             @default("ONLINE")
+  preferredTime      String
+  agreedTime         String?
+  durationMinutes    Int                @default(30)
+  proposedCredits    Float              @default(0.5)
+  agreedCredits      Float              @default(0.5)
+  deadline           String?
+  deliverables       String?
+  status             String             @default("PENDING")
+  
+  requesterCompleted Boolean            @default(false)
+  providerCompleted  Boolean            @default(false)
+  settlementState    String             @default("UNSETTLED")
+  
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  requester          User               @relation("RequesterSwaps", fields: [requesterId], references: [id], onDelete: Cascade)
+  provider           User               @relation("ProviderSwaps", fields: [providerId], references: [id], onDelete: Cascade)
+  skill              Skill              @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  messages           Message[]
+  ratings            Rating[]
+  creditTransactions CreditTransaction[]
+
+  @@index([requesterId])
+  @@index([providerId])
+  @@index([status])
+}
+
+model CreditTransaction {
+  id             String    @id @default(cuid())
+  userId         String
+  swapId         String?
+  type           String
+  amount         Float
+  balanceAfter   Float
+  description    String
+  idempotencyKey String?   @unique
+  createdAt      DateTime  @default(now())
+
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  swap           Swap?     @relation(fields: [swapId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([swapId])
+  @@index([type])
+}
+
+model Rating {
+  id          String   @id @default(cuid())
+  swapId      String
+  reviewerId  String
+  recipientId String
+  score       Int
+  reviewText  String
+  createdAt   DateTime @default(now())
+
+  swap        Swap     @relation(fields: [swapId], references: [id], onDelete: Cascade)
+  reviewer    User     @relation("GivenRatings", fields: [reviewerId], references: [id], onDelete: Cascade)
+  recipient   User     @relation("ReceivedRatings", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@unique([swapId, reviewerId])
+  @@index([recipientId])
+  @@index([reviewerId])
+  @@index([swapId])
+}
+
+model Message {
+  id          String   @id @default(cuid())
+  swapId      String
+  senderId    String
+  recipientId String
+  content     String
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  swap        Swap     @relation(fields: [swapId], references: [id], onDelete: Cascade)
+  sender      User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient   User     @relation("ReceivedMessages", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@index([swapId])
+  @@index([senderId])
+  @@index([recipientId])
+}
+
+model Notification {
+  id          String   @id @default(cuid())
+  userId      String
+  eventType   String
+  title       String
+  content     String
+  link        String?
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+}
+
+model VerificationRequest {
+  id               String   @id @default(cuid())
+  userId           String
+  verificationType String
+  status           String   @default("PENDING")
+  documentDetails  String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+}
+
+model UnmetSkillRequest {
+  id             String   @id @default(cuid())
+  userId         String
+  skillName      String
+  category       String
+  description    String?
+  notifyOnMatch  Boolean  @default(true)
+  status         String   @default("ACTIVE")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([skillName])
+  @@index([status])
+}

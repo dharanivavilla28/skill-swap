@@ -1,0 +1,232 @@
+// SkillSwap Prisma Schema
+// Designed for transparent, trust-aware student skill exchange
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                   String            @id @default(cuid())
+  email                String            @unique
+  passwordHash         String
+  name                 String
+  college              String            @default("Metro State University")
+  course               String?           // e.g. "Computer Science"
+  year                 String?           // e.g. "Sophomore (Year 2)"
+  bio                  String?
+  interests            String?           // Comma-separated or JSON list of interests
+  availabilityJson     String?           // JSON string representing available day/time slots
+  preferredFormat      String            @default("BOTH") // "ONLINE", "IN_PERSON", "BOTH"
+  verificationStatus   String            @default("UNVERIFIED") // "UNVERIFIED", "PENDING", "VERIFIED"
+  trustScore           Float             @default(0.5)
+  creditBalance        Float             @default(5.0)
+  totalCreditsEarned   Float             @default(0.0)
+  totalCreditsSpent    Float             @default(0.0)
+  avatarInitial        String?
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+
+  // Relations
+  userSkills           UserSkill[]
+  requestedSwaps       Swap[]            @relation("RequesterSwaps")
+  providedSwaps        Swap[]            @relation("ProviderSwaps")
+  creditTransactions   CreditTransaction[]
+  givenRatings         Rating[]          @relation("GivenRatings")
+  receivedRatings      Rating[]          @relation("ReceivedRatings")
+  sentMessages         Message[]         @relation("SentMessages")
+  receivedMessages     Message[]         @relation("ReceivedMessages")
+  notifications        Notification[]
+  verificationRequests VerificationRequest[]
+  unmetRequests        UnmetSkillRequest[]
+
+  @@index([email])
+  @@index([college])
+}
+
+model Skill {
+  id            String      @id @default(cuid())
+  canonicalName String      @unique
+  category      String      // "TECHNOLOGY", "DESIGN", "CAREER", "BUSINESS", "CREATIVE", "OTHER"
+  description   String?
+  createdAt     DateTime    @default(now())
+
+  // Relations
+  userSkills    UserSkill[]
+  swaps         Swap[]
+
+  @@index([category])
+  @@index([canonicalName])
+}
+
+model UserSkill {
+  id          String   @id @default(cuid())
+  userId      String
+  skillId     String
+  type        String   // "OFFERED" or "WANTED"
+  proficiency String   @default("INTERMEDIATE") // "BEGINNER", "INTERMEDIATE", "ADVANCED", "EXPERT"
+  description String?  // Optional context (e.g. "Can teach intro Pandas & Matplotlib")
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  // Relations
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skill       Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, skillId, type])
+  @@index([userId])
+  @@index([skillId])
+  @@index([type])
+}
+
+model Swap {
+  id                 String             @id @default(cuid())
+  requesterId        String
+  providerId         String
+  skillId            String
+  learningGoal       String
+  sessionFormat      String             @default("ONLINE") // "ONLINE", "IN_PERSON"
+  preferredTime      String             // ISO datetime string or human readable slot
+  agreedTime         String?
+  durationMinutes    Int                @default(30) // 30, 45, 60
+  proposedCredits    Float              @default(0.5) // 0.5 for 30m, 0.75 for 45m, 1.0 for 60m
+  agreedCredits      Float              @default(0.5)
+  deadline           String?
+  deliverables       String?
+  status             String             @default("PENDING") 
+  // Status: "PENDING", "ACCEPTED", "SCHEDULED", "IN_PROGRESS", "COMPLETED", "DECLINED", "CANCELLED", "DISPUTED"
+  
+  requesterCompleted Boolean            @default(false)
+  providerCompleted  Boolean            @default(false)
+  settlementState    String             @default("UNSETTLED") // "UNSETTLED", "SETTLED", "DISPUTED"
+  
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  // Relations
+  requester          User               @relation("RequesterSwaps", fields: [requesterId], references: [id], onDelete: Cascade)
+  provider           User               @relation("ProviderSwaps", fields: [providerId], references: [id], onDelete: Cascade)
+  skill              Skill              @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  messages           Message[]
+  ratings            Rating[]
+  creditTransactions CreditTransaction[]
+
+  @@index([requesterId])
+  @@index([providerId])
+  @@index([status])
+}
+
+model CreditTransaction {
+  id             String    @id @default(cuid())
+  userId         String
+  swapId         String?
+  type           String    // "STARTING_GRANT", "EARNED", "SPENT", "REFUND", "ADJUSTMENT"
+  amount         Float     // Positive for credit/earned, negative or magnitude depending on presentation
+  balanceAfter   Float
+  description    String
+  idempotencyKey String?   @unique
+  createdAt      DateTime  @default(now())
+
+  // Relations
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  swap           Swap?     @relation(fields: [swapId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([swapId])
+  @@index([type])
+}
+
+model Rating {
+  id          String   @id @default(cuid())
+  swapId      String
+  reviewerId  String
+  recipientId String
+  score       Int      // 1 to 5
+  reviewText  String
+  createdAt   DateTime @default(now())
+
+  // Relations
+  swap        Swap     @relation(fields: [swapId], references: [id], onDelete: Cascade)
+  reviewer    User     @relation("GivenRatings", fields: [reviewerId], references: [id], onDelete: Cascade)
+  recipient   User     @relation("ReceivedRatings", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@unique([swapId, reviewerId]) // Prevent duplicate reviews by the same participant for the same swap
+  @@index([recipientId])
+  @@index([reviewerId])
+  @@index([swapId])
+}
+
+model Message {
+  id          String   @id @default(cuid())
+  swapId      String
+  senderId    String
+  recipientId String
+  content     String
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  // Relations
+  swap        Swap     @relation(fields: [swapId], references: [id], onDelete: Cascade)
+  sender      User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient   User     @relation("ReceivedMessages", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@index([swapId])
+  @@index([senderId])
+  @@index([recipientId])
+}
+
+model Notification {
+  id          String   @id @default(cuid())
+  userId      String
+  eventType   String   // "MATCH_FOUND", "REQUEST_RECEIVED", "REQUEST_ACCEPTED", "REQUEST_DECLINED", "SESSION_SCHEDULED", "SESSION_COMPLETED", "CREDITS_EARNED", "CREDITS_SPENT", "FEEDBACK_RECEIVED", "UNMET_REQUEST_MATCHED"
+  title       String
+  content     String
+  link        String?
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  // Relations
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+}
+
+model VerificationRequest {
+  id               String   @id @default(cuid())
+  userId           String
+  verificationType String   // "STUDENT_ID", "CAMPUS_EMAIL", "COURSE_ENROLLMENT"
+  status           String   @default("PENDING") // "PENDING", "APPROVED", "REJECTED"
+  documentDetails  String?  // Sanitized details / student ID reference
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // Relations
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+}
+
+model UnmetSkillRequest {
+  id             String   @id @default(cuid())
+  userId         String
+  skillName      String
+  category       String   // "TECHNOLOGY", "DESIGN", "CAREER", "BUSINESS", "CREATIVE", "OTHER"
+  description    String?
+  notifyOnMatch  Boolean  @default(true)
+  status         String   @default("ACTIVE") // "ACTIVE", "FULFILLED", "CANCELLED"
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([skillName])
+  @@index([status])
+}

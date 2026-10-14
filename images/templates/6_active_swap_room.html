@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>5.6 Active Swap Room UI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-900 min-h-screen relative overflow-hidden flex items-center justify-center p-6">
+  
+  <!-- Background Blurred Swap Sessions Page for Context -->
+  <div class="absolute inset-0 bg-slate-50/70 p-8 filter blur-[2px] opacity-60 pointer-events-none select-none">
+    <div class="max-w-7xl mx-auto space-y-6">
+      <div class="h-12 bg-slate-200 rounded-xl w-1/3"></div>
+      <div class="h-32 bg-slate-200 rounded-2xl w-full"></div>
+      <div class="h-44 bg-slate-200 rounded-2xl w-full"></div>
+    </div>
+  </div>
+
+  <!-- Active Swap Room Window (Central Focus) -->
+  <div class="relative z-10 max-w-4xl w-full bg-white rounded-3xl shadow-2xl border border-slate-200/90 overflow-hidden flex flex-col h-[740px]">
+    
+    <!-- Header -->
+    <div class="p-6 border-b border-slate-200 bg-slate-50/80 flex items-start justify-between">
+      <div class="flex items-center gap-4">
+        <div class="h-14 w-14 rounded-2xl bg-indigo-600 text-white font-black text-xl flex items-center justify-center shadow-md">
+          MV
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h2 class="text-xl font-black text-slate-900 tracking-tight">Active Swap Room: Marcus Vance</h2>
+            <span class="px-2.5 py-0.5 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-bold">
+              SCHEDULED
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 mt-0.5">
+            Topic: <strong>Public Speaking & Pitch Deck Intro</strong> • 45 Minutes Session • Campus Commons Room 304
+          </p>
+        </div>
+      </div>
+
+      <div class="text-right">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-teal-50 border border-teal-200 text-teal-800 text-xs font-mono font-bold">
+          <span>🪙</span> 0.75 CR Escrow Locked
+        </div>
+        <div class="text-[11px] text-slate-400 mt-1">Settlement occurs upon dual signoff</div>
+      </div>
+    </div>
+
+    <!-- Dual Confirmation Status Bar -->
+    <div class="bg-amber-50/80 border-b border-amber-200/80 px-6 py-2.5 flex items-center justify-between text-xs text-amber-900">
+      <div class="flex items-center gap-3">
+        <span class="font-bold flex items-center gap-1 text-amber-800">
+          <span>🛡️</span> Dual-Signoff Gate:
+        </span>
+        <span class="flex items-center gap-1.5 text-slate-700 font-medium">
+          <span class="h-2 w-2 rounded-full bg-amber-400"></span> Learner (Alex): <strong>Pending Completion</strong>
+        </span>
+        <span class="text-slate-300">|</span>
+        <span class="flex items-center gap-1.5 text-slate-700 font-medium">
+          <span class="h-2 w-2 rounded-full bg-amber-400"></span> Mentor (Marcus): <strong>Pending Completion</strong>
+        </span>
+      </div>
+      <span class="text-[11px] font-mono text-amber-800 font-semibold">Scheduled Date: Oct 18, 6:30 PM</span>
+    </div>
+
+    <!-- Chat Messages Scroll Area -->
+    <div class="flex-1 overflow-y-auto p-6 space-y-4 bg-slate-50/40">
+      
+      <!-- Timestamp Divider -->
+      <div class="text-center">
+        <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider bg-white px-3 py-1 rounded-full border border-slate-200">
+          Thursday, October 11 • Session Agreement Confirmed
+        </span>
+      </div>
+
+      <!-- Message 1 (Alex - Learner) -->
+      <div class="flex flex-col items-end">
+        <div class="flex items-center gap-1.5 mb-1 text-[11px] text-slate-400">
+          <span class="font-bold text-slate-600">Alex Rivera (You)</span>
+          <span>•</span>
+          <span>4:15 PM</span>
+        </div>
+        <div class="max-w-[70%] rounded-2xl rounded-br-none bg-teal-600 text-white px-4 py-3 text-xs shadow-xs leading-relaxed">
+          Hi Marcus! Excited for our session next week. Should I prepare a 1-minute intro draft beforehand for the networking night?
+        </div>
+      </div>
+
+      <!-- Message 2 (Marcus - Mentor) -->
+      <div class="flex flex-col items-start">
+        <div class="flex items-center gap-1.5 mb-1 text-[11px] text-slate-400">
+          <span class="font-bold text-indigo-700">Marcus Vance</span>
+          <span>•</span>
+          <span>4:22 PM</span>
+        </div>
+        <div class="max-w-[70%] rounded-2xl rounded-bl-none bg-white border border-slate-200 text-slate-800 px-4 py-3 text-xs shadow-xs leading-relaxed">
+          Hey Alex! Yes, absolutely. Bring 3 bullet points about your major, interests, and what kind of projects you want to work on. We will structure the STAR narrative and polish delivery together!
+        </div>
+      </div>
+
+      <!-- Message 3 (Alex) -->
+      <div class="flex flex-col items-end">
+        <div class="flex items-center gap-1.5 mb-1 text-[11px] text-slate-400">
+          <span class="font-bold text-slate-600">Alex Rivera (You)</span>
+          <span>•</span>
+          <span>4:25 PM</span>
+        </div>
+        <div class="max-w-[70%] rounded-2xl rounded-br-none bg-teal-600 text-white px-4 py-3 text-xs shadow-xs leading-relaxed">
+          Awesome, working on those bullets now. Would you prefer meeting at the Campus Commons quiet study rooms or over Zoom?
+        </div>
+      </div>
+
+      <!-- Message 4 (Marcus) -->
+      <div class="flex flex-col items-start">
+        <div class="flex items-center gap-1.5 mb-1 text-[11px] text-slate-400">
+          <span class="font-bold text-indigo-700">Marcus Vance</span>
+          <span>•</span>
+          <span>4:26 PM</span>
+        </div>
+        <div class="max-w-[70%] rounded-2xl rounded-bl-none bg-white border border-slate-200 text-slate-800 px-4 py-3 text-xs shadow-xs leading-relaxed">
+          Campus Commons Room 304 is great! In-person practice is much better for body language and projection. See you Thursday at 6:30 PM!
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Action Toolbar & Input -->
+    <div class="border-t border-slate-200 bg-white p-4 space-y-3">
+      
+      <!-- Session Milestone Controls -->
+      <div class="flex items-center justify-between pb-2 border-b border-slate-100 text-xs">
+        <div class="flex items-center gap-2 text-slate-500">
+          <span>Session Deliverable:</span>
+          <span class="font-bold text-slate-800">3-min Elevator Pitch Outline</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="px-3 py-1.5 rounded-xl border border-slate-200 text-slate-600 font-semibold hover:bg-slate-50">
+            Reschedule Time
+          </button>
+          <button class="px-4 py-1.5 rounded-xl bg-emerald-600 text-white font-bold hover:bg-emerald-700 shadow-xs flex items-center gap-1.5">
+            <span>✓ Confirm Session Finished</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Message Input Bar -->
+      <div class="flex items-center gap-2">
+        <input
+          type="text"
+          readonly
+          value="Sounds perfect Marcus, looking forward to it!"
+          class="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-xs text-slate-900 focus:outline-none"
+        />
+        <button class="inline-flex items-center gap-1.5 bg-teal-600 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-xs">
+          <span>Send Message</span>
+          <span>✈️</span>
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

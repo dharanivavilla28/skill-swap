@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>5.8 Vitest Test Results Terminal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap');
+    body { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-8">
+  
+  <!-- Terminal Window Chrome -->
+  <div class="max-w-[1260px] w-full bg-slate-950 rounded-2xl shadow-2xl border border-slate-800 overflow-hidden text-xs">
+    
+    <!-- Title Bar -->
+    <div class="bg-slate-900/90 px-4 py-3 border-b border-slate-800 flex items-center justify-between select-none">
+      <div class="flex items-center gap-2">
+        <span class="h-3 w-3 rounded-full bg-rose-500 inline-block"></span>
+        <span class="h-3 w-3 rounded-full bg-amber-500 inline-block"></span>
+        <span class="h-3 w-3 rounded-full bg-emerald-500 inline-block"></span>
+      </div>
+      <div class="text-[11px] font-semibold text-slate-400 flex items-center gap-2">
+        <span>terminal</span>
+        <span>—</span>
+        <span class="text-slate-300">npm test • vitest run tests/matching-engine.test.ts</span>
+      </div>
+      <div class="text-[10px] text-slate-500 font-mono">Section 5.8 Test Suite</div>
+    </div>
+
+    <!-- Terminal Content Area -->
+    <div class="p-6 space-y-3 font-mono leading-relaxed">
+      
+      <!-- Command prompt -->
+      <div class="flex items-center gap-2 text-slate-300">
+        <span class="text-teal-400 font-bold">student@skillswap-dev</span>:<span class="text-indigo-400 font-bold">~/skill-swap</span>$ <span class="text-white font-bold">npm test</span>
+      </div>
+
+      <div class="text-slate-500">
+        &gt; skillswap@1.0.0 test<br>
+        &gt; vitest run
+      </div>
+
+      <div class="pt-2 text-slate-400">
+        <span class="px-2 py-0.5 rounded bg-teal-900/40 text-teal-300 font-bold">RUN</span> <span class="text-slate-400">v3.2.7 C:/Users/maggi/Downloads/skill-swap-main/skill-swap-main</span>
+      </div>
+
+      <!-- Test File Header -->
+      <div class="pt-2">
+        <span class="text-emerald-400 font-bold">✓</span> <span class="text-white font-bold">tests/matching-engine.test.ts</span> <span class="text-slate-400">(11 tests)</span> <span class="text-slate-500">7ms</span>
+      </div>
+
+      <!-- 11 Tests Breakdown -->
+      <div class="pl-6 space-y-1.5 text-[11px]">
+        
+        <!-- Suite 1 -->
+        <div class="text-slate-400 font-semibold pt-1">
+          SkillSwap Matching Engine &amp; Trust Algorithm &gt; Trust Score Calculation (T = 0.4R + 0.3C + 0.2V + 0.1N)
+        </div>
+        <div class="pl-4 text-emerald-400 flex items-center gap-2">
+          <span>✓</span> <span class="text-slate-300">normalizes verified experienced provider to high trust score</span> <span class="text-slate-600">(1ms)</span>
+        </div>
+        <div class="pl-4 text-emerald-400 flex items-center gap-2">
+          <span>✓</span> <span class="text-slate-300">handles new user with limited history without penalizing aggressively</span> <span class="text-slate-600">(1ms)</span>
+        </div>
+
+        <!-- Suite 2 -->
+        <div class="text-slate-400 font-semibold pt-1">
+          SkillSwap Matching Engine &amp; Trust Algorithm &gt; Rating Score Calculation (ratingScore = (R / 5) * 25)
+        </div>
+        <div class="pl-4 text-emerald-400 flex items-center gap-2">
+          <span>✓</span> <span class="text-slate-300">computes exact rating points for rated user</span> <span class="text-slate-600">(1ms)</span>
+        </div>
+        <div class="pl-4 text-emerald-400 flex items-center gap-2">
+          <span>✓</span> <span class="text-slate-300">uses neutral documented baseline for unrated user</span> <span class="text-slate-600">(1ms)</span>
+        </div>
+
+        <!-- Suite 3 -->
+        <div class="text-slate-400 font-semibold pt-1">
+          SkillSwap Matching Engine &amp; Trust Algorithm &gt; Availability Overlap Scoring (15 pts max)
+        </div>
+        <div class="pl-4 text-emerald-400 flex items-center gap-2">
+          <span>✓</span> <span class="text-slate-300">awards maximum points when learner has &gt;= 3 matching slots</span> <span class="text-slate-600">(1ms)</span>
+        </div>
+        <div class="pl-4 text-emerald-400 flex items-center gap-2">
+          <span>✓</span> <span class="text-slate-300">awards partial points for single overlapping slot</span> <span class="text-slate-600">(1ms)</span>
+        </div>
+
+        <!-- Suite 4 -->
+        <div class="text-slate-400 font-semibold pt-1">
+          SkillSwap Matching Engine &amp; Trust Algorithm &gt; Response Behaviour Scoring (10 pts max)
+        </div>
+        <div class="pl-4 text-emerald-400 flex items-center gap-2">
+          <span>✓</span> <span class="text-slate-300">awards 10 points for response under 1 hour</span> <span class="text-slate-600">(1ms)</span>
+        </div>
+        <div class="pl-4 text-emerald-400 flex items-center gap-2">
+          <span>✓</span> <span class="text-slate-300">awards neutral 7 points for new provider with no response history</span> <span class="text-slate-600">(1ms)</span>
+        </div>
+
+        <!-- Suite 5 -->
+        <div class="text-slate-400 font-semibold pt-1">
+          SkillSwap Matching Engine &amp; Trust Algorithm &gt; Skill Relevance &amp; Matching Fallbacks
+        </div>
+        <div class="pl-4 text-emerald-400 flex items-center gap-2">
+          <span>✓</span> <span class="text-slate-300">awards exact match 35+ points for target skill Python</span> <span class="text-slate-600">(1ms)</span>
+        </div>
+        <div class="pl-4 text-emerald-400 flex items-center gap-2">
+          <span>✓</span> <span class="text-slate-300">ranks exact match higher than related skill match</span> <span class="text-slate-600">(1ms)</span>
+        </div>
+        <div class="pl-4 text-emerald-400 flex items-center gap-2">
+          <span>✓</span> <span class="text-slate-300">ranks matches deterministically and provides "Why this match?" panel</span> <span class="text-slate-600">(1ms)</span>
+        </div>
+
+      </div>
+
+      <!-- Vitest Execution Summary Box -->
+      <div class="pt-4 border-t border-slate-800 space-y-1 text-xs">
+        <div class="flex items-center gap-6">
+          <span class="text-slate-400">Test Files</span>
+          <span class="text-emerald-400 font-bold">1 passed (1)</span>
+        </div>
+        <div class="flex items-center gap-6">
+          <span class="text-slate-400">Tests</span>
+          <span class="text-emerald-400 font-bold">11 passed (11)</span>
+        </div>
+        <div class="flex items-center gap-6">
+          <span class="text-slate-400">Start at</span>
+          <span class="text-slate-300">21:42:28</span>
+        </div>
+        <div class="flex items-center gap-6">
+          <span class="text-slate-400">Duration</span>
+          <span class="text-slate-300">626ms <span class="text-slate-500">(transform 83ms, setup 0ms, collect 81ms, tests 7ms, environment 0ms, prepare 156ms)</span></span>
+        </div>
+      </div>
+
+      <!-- Verification Status Banner -->
+      <div class="mt-4 p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 flex items-center justify-between text-[11px]">
+        <span class="flex items-center gap-2 font-bold">
+          <span>✓</span>
+          <span>PASSED: All matching heuristics, trust score formulas, and test assertions verified.</span>
+        </span>
+        <span class="text-emerald-400 font-mono">100% Pass Rate</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

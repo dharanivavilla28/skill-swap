@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>5.6 User Profile & Trust Badge UI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen">
+  
+  <!-- Navigation Bar -->
+  <header class="border-b border-slate-200 bg-white/90 backdrop-blur-md sticky top-0 z-50">
+    <div class="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-8">
+        <div class="flex items-center gap-2">
+          <div class="h-9 w-9 rounded-xl bg-teal-600 flex items-center justify-center text-white shadow-sm font-black text-lg">⚡</div>
+          <span class="text-xl font-extrabold text-slate-900 tracking-tight">Skill<span class="text-teal-600">Swap</span></span>
+        </div>
+        <nav class="hidden md:flex items-center gap-1 text-xs font-semibold text-slate-600">
+          <a class="px-3 py-2 rounded-lg bg-teal-50 text-teal-800 font-bold border border-teal-200/60">Explore Peers</a>
+          <a class="px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors">Matching Engine</a>
+          <a class="px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors">Swap Sessions</a>
+          <a class="px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors">Wallet & Ledger</a>
+          <a class="px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors">Dashboard</a>
+        </nav>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-800 text-xs font-bold">
+          <span>🪙</span> 5.00 CR
+        </span>
+        <div class="h-8 w-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold">AR</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-7xl px-6 py-8 space-y-7">
+    
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-slate-200">
+      <div>
+        <div class="inline-flex items-center gap-2 text-xs font-bold text-teal-600 uppercase tracking-wider mb-1.5">
+          <span>👥 CAMPUS PEER DIRECTORY</span>
+          <span class="px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 text-[10px]">Section 5.6 Profile Showcase</span>
+        </div>
+        <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">
+          User Profile & Campus Trust Verification
+        </h1>
+        <p class="mt-1 text-sm text-slate-500">
+          Detailed student profile showcasing verified credentials, objective Trust Index, and skill offerings.
+        </p>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-semibold text-slate-400">Search Filter:</span>
+        <span class="px-3 py-1 rounded-xl bg-teal-600 text-white text-xs font-bold">Python</span>
+        <span class="px-3 py-1 rounded-xl bg-slate-100 text-slate-600 text-xs font-medium border border-slate-200">Technology</span>
+      </div>
+    </div>
+
+    <!-- Featured Profile Card (Centered / Showcase) -->
+    <div class="max-w-4xl mx-auto">
+      <div class="rounded-3xl border-2 border-teal-500 bg-white p-8 shadow-xl space-y-6 relative overflow-hidden">
+        
+        <!-- Top Glow Ribbon -->
+        <div class="absolute top-0 right-0 bg-teal-600 text-white text-[11px] font-black uppercase px-6 py-1 rounded-bl-2xl shadow-sm tracking-wider">
+          ★ Featured Verified Mentor
+        </div>
+
+        <!-- Student Identification Header -->
+        <div class="flex items-start justify-between gap-6 pt-2">
+          <div class="flex items-center gap-5">
+            <div class="h-20 w-20 rounded-3xl bg-teal-600 text-white font-black text-2xl flex items-center justify-center shadow-md">
+              SC
+            </div>
+            <div>
+              <div class="flex items-center gap-3">
+                <h2 class="text-2xl font-black text-slate-900 tracking-tight">Sarah Chen</h2>
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold">
+                  <span>✓</span> Student ID Verified
+                </span>
+              </div>
+              <p class="text-xs font-semibold text-slate-500 mt-1">
+                Computer Science & Statistics • Junior (Year 3) • Metro State University
+              </p>
+              <div class="flex items-center gap-2 mt-2 text-xs text-slate-400">
+                <span>📍 Campus Commons & Library</span>
+                <span>•</span>
+                <span>⚡ Reply Time: &lt; 45 Mins</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Highlighted Trust Score Badge Box -->
+          <div class="rounded-2xl bg-gradient-to-br from-teal-50 via-emerald-50 to-teal-100/60 border-2 border-teal-300 p-4 text-center shrink-0 shadow-xs">
+            <div class="text-[10px] font-black text-teal-800 uppercase tracking-wider">Campus Trust Index</div>
+            <div class="text-3xl font-black text-teal-700 tracking-tight mt-0.5 mono">
+              94%
+            </div>
+            <div class="text-[10px] text-teal-900/80 font-semibold mt-1">
+              T = 0.4R + 0.3C + 0.2V + 0.1N
+            </div>
+          </div>
+        </div>
+
+        <!-- Rating & Quantitative Proof Bar -->
+        <div class="grid grid-cols-4 gap-3 py-3 border-y border-slate-100 text-xs">
+          <div class="text-center p-2 rounded-xl bg-slate-50">
+            <div class="text-slate-400 text-[10px] uppercase font-semibold">Average Rating</div>
+            <div class="font-black text-amber-500 text-sm mt-0.5">★ 5.0 / 5.0</div>
+            <div class="text-[10px] text-slate-400">1 review</div>
+          </div>
+          <div class="text-center p-2 rounded-xl bg-slate-50">
+            <div class="text-slate-400 text-[10px] uppercase font-semibold">Completed Swaps</div>
+            <div class="font-black text-slate-800 text-sm mt-0.5">1 Exchange</div>
+            <div class="text-[10px] text-emerald-600 font-semibold">100% completion</div>
+          </div>
+          <div class="text-center p-2 rounded-xl bg-slate-50">
+            <div class="text-slate-400 text-[10px] uppercase font-semibold">Session Format</div>
+            <div class="font-black text-slate-800 text-sm mt-0.5">Flexible</div>
+            <div class="text-[10px] text-slate-400">Online & Campus</div>
+          </div>
+          <div class="text-center p-2 rounded-xl bg-slate-50">
+            <div class="text-slate-400 text-[10px] uppercase font-semibold">Credit Balance</div>
+            <div class="font-black text-teal-700 text-sm mt-0.5 mono">9.50 CR</div>
+            <div class="text-[10px] text-slate-400">6.0 earned teaching</div>
+          </div>
+        </div>
+
+        <!-- Student Bio -->
+        <div class="space-y-1">
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">About Sarah:</h4>
+          <p class="text-xs text-slate-700 leading-relaxed">
+            Computer science junior and department teaching assistant. I love helping beginners write their first Python scripts without feeling intimidated. Also enthusiastic about exploratory data analysis and pandas. Looking to learn Figma auto-layout and interactive prototyping for upcoming hackathons!
+          </p>
+        </div>
+
+        <!-- Skills Grid: Offered vs Wanted -->
+        <div class="grid grid-cols-2 gap-6 pt-2">
+          <!-- Skills Offered -->
+          <div class="space-y-2">
+            <div class="text-xs font-bold text-teal-800 uppercase tracking-wider flex items-center gap-1.5">
+              <span>✓</span> Skills Offered to Teach:
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1.5 rounded-xl bg-teal-50 border border-teal-200 text-teal-900 text-xs font-bold">
+                Python <span class="text-teal-600 font-semibold">(Advanced Level)</span>
+              </span>
+              <span class="px-3 py-1.5 rounded-xl bg-teal-50 border border-teal-200 text-teal-900 text-xs font-bold">
+                Data Analysis <span class="text-teal-600 font-semibold">(Advanced Level)</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Skills Wanted -->
+          <div class="space-y-2">
+            <div class="text-xs font-bold text-indigo-800 uppercase tracking-wider flex items-center gap-1.5">
+              <span>📖</span> Skills Looking to Learn:
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1.5 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-900 text-xs font-bold">
+                Figma Prototyping & UI Systems
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Schedule & Peer Endorsement -->
+        <div class="grid grid-cols-2 gap-4 pt-2">
+          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 text-xs space-y-1">
+            <div class="font-bold text-slate-700">📅 Weekly Schedule Availability:</div>
+            <div class="text-[11px] text-slate-500">Saturday Morning (9:00 AM – 12:00 PM)</div>
+            <div class="text-[11px] text-slate-500">Tuesday Evening (5:00 PM – 9:00 PM)</div>
+            <div class="text-[11px] text-slate-500">Thursday Evening (5:00 PM – 9:00 PM)</div>
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-teal-50/50 border border-teal-200/70 text-xs space-y-1">
+            <div class="font-bold text-teal-900">💬 Peer Testimonial:</div>
+            <p class="text-[11px] text-slate-600 italic">
+              "Sarah was super patient! She explained VS Code setup and loops clearly with great analogies."
+            </p>
+            <div class="text-[10px] text-slate-400 font-semibold">— Alex Rivera • Freshmen Student</div>
+          </div>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+          <div class="text-xs text-slate-500">
+            Escrow Rate: <strong class="text-slate-900 font-bold">1.0 credit / hour (Direct Peer Barter)</strong>
+          </div>
+          <button class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-md transition-all">
+            <span>Request 1-on-1 Swap with Sarah</span>
+            <span>→</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+</body>
+</html>

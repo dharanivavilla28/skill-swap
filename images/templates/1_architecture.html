@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>5.4 System Architecture Diagram</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 p-8 min-h-screen flex items-center justify-center">
+  <div class="max-w-[1360px] w-full bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl space-y-6">
+    
+    <!-- Header -->
+    <div class="flex items-center justify-between border-b border-slate-800 pb-5">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-400 text-xs font-bold uppercase tracking-wider mb-2">
+          <span>Section 5.4 • High-Level Design</span>
+        </div>
+        <h1 class="text-3xl font-black text-white tracking-tight flex items-center gap-3">
+          <span>SkillSwap System Architecture</span>
+          <span class="text-xs font-mono font-medium px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 border border-slate-700">3-Tier Block Model</span>
+        </h1>
+        <p class="text-sm text-slate-400 mt-1">Decoupled presentation, algorithmic matching engine, and relational persistence layer.</p>
+      </div>
+      <div class="flex items-center gap-4 text-xs font-mono text-slate-400">
+        <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>Production Ready</span>
+        <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-teal-500"></span>TypeScript Strict</span>
+      </div>
+    </div>
+
+    <!-- 3 Layers Container -->
+    <div class="space-y-5">
+      
+      <!-- TIER 1: Presentation Layer -->
+      <div class="rounded-2xl border-2 border-indigo-500/30 bg-slate-900/90 p-5 shadow-lg relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-indigo-500/20 text-indigo-300 px-4 py-1 rounded-bl-xl text-xs font-bold font-mono tracking-wider border-l border-b border-indigo-500/30">
+          TIER 1 • PRESENTATION & CLIENT LAYER
+        </div>
+        <div class="mb-4 flex items-center gap-2">
+          <div class="h-3 w-3 rounded-full bg-indigo-500"></div>
+          <h2 class="text-base font-extrabold text-indigo-200 tracking-wide uppercase">Next.js 16 App Router & React 19 Client UI</h2>
+        </div>
+
+        <div class="grid grid-cols-5 gap-3 text-xs">
+          <div class="bg-slate-950/70 border border-indigo-500/20 rounded-xl p-3.5 space-y-1">
+            <div class="font-bold text-indigo-300">Smart Matchmaker UI</div>
+            <div class="text-[11px] text-slate-400">/matches</div>
+            <p class="text-[10px] text-slate-500 leading-tight">Live multi-criteria preference controls & transparent match score breakdown.</p>
+          </div>
+          <div class="bg-slate-950/70 border border-indigo-500/20 rounded-xl p-3.5 space-y-1">
+            <div class="font-bold text-indigo-300">Student Dashboard</div>
+            <div class="text-[11px] text-slate-400">/dashboard</div>
+            <p class="text-[10px] text-slate-500 leading-tight">Credit balances, trust indicators, skill portfolio, and pending exchanges.</p>
+          </div>
+          <div class="bg-slate-950/70 border border-indigo-500/20 rounded-xl p-3.5 space-y-1">
+            <div class="font-bold text-indigo-300">Active Swap Room</div>
+            <div class="text-[11px] text-slate-400">/sessions</div>
+            <p class="text-[10px] text-slate-500 leading-tight">Lifecycle state progression, dual signoff, and real-time peer messaging.</p>
+          </div>
+          <div class="bg-slate-950/70 border border-indigo-500/20 rounded-xl p-3.5 space-y-1">
+            <div class="font-bold text-indigo-300">Wallet & Ledger</div>
+            <div class="text-[11px] text-slate-400">/wallet</div>
+            <p class="text-[10px] text-slate-500 leading-tight">Non-cash time economy ledger with escrow lock visibility.</p>
+          </div>
+          <div class="bg-slate-950/70 border border-indigo-500/20 rounded-xl p-3.5 space-y-1">
+            <div class="font-bold text-indigo-300">Campus Peer Directory</div>
+            <div class="text-[11px] text-slate-400">/explore</div>
+            <p class="text-[10px] text-slate-500 leading-tight">Search, category filter pills, verified badges, and swap proposal modal.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrow Bridge 1 -> 2 -->
+      <div class="flex items-center justify-center gap-3 text-xs font-mono text-slate-400">
+        <span>▼ HTTP/JSON Client Requests (TanStack / Fetch)</span>
+        <span class="text-slate-600">|</span>
+        <span>▲ Server Component Streaming & Route Handlers</span>
+      </div>
+
+      <!-- TIER 2: Business Logic & Matching Core -->
+      <div class="rounded-2xl border-2 border-teal-500/30 bg-slate-900/90 p-5 shadow-lg relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-teal-500/20 text-teal-300 px-4 py-1 rounded-bl-xl text-xs font-bold font-mono tracking-wider border-l border-b border-teal-500/30">
+          TIER 2 • BUSINESS LOGIC, MATCHING ENGINE & API SERVICES
+        </div>
+        <div class="mb-4 flex items-center gap-2">
+          <div class="h-3 w-3 rounded-full bg-teal-500"></div>
+          <h2 class="text-base font-extrabold text-teal-200 tracking-wide uppercase">Application Services & Algorithmic Core</h2>
+        </div>
+
+        <div class="grid grid-cols-4 gap-3 text-xs">
+          <!-- Module 1 -->
+          <div class="bg-slate-950/70 border border-teal-500/20 rounded-xl p-3.5 space-y-1.5">
+            <div class="font-bold text-teal-300 flex items-center gap-1.5">
+              <span>Matching Engine</span>
+              <span class="text-[9px] px-1.5 py-0.2 rounded bg-teal-900/50 text-teal-300">Deterministic</span>
+            </div>
+            <ul class="text-[11px] text-slate-400 space-y-1">
+              <li>• Skill Fit: Exact vs. Domain Fallback (35-40%)</li>
+              <li>• Availability Overlap Matrix (25%)</li>
+              <li>• Campus Trust Score: T = 0.4R+0.3C+0.2V+0.1N</li>
+              <li>• Response Latency Index & Ranker</li>
+            </ul>
+          </div>
+          <!-- Module 2 -->
+          <div class="bg-slate-950/70 border border-teal-500/20 rounded-xl p-3.5 space-y-1.5">
+            <div class="font-bold text-teal-300 flex items-center gap-1.5">
+              <span>Time Economy & Escrow</span>
+              <span class="text-[9px] px-1.5 py-0.2 rounded bg-teal-900/50 text-teal-300">Non-Cash</span>
+            </div>
+            <ul class="text-[11px] text-slate-400 space-y-1">
+              <li>• Equal Value Rule: 1 Hour = 1.0 Credit</li>
+              <li>• Double-Entry Escrow Lock Mechanism</li>
+              <li>• Idempotent Balance Settlement</li>
+              <li>• Mutual Completion Release Gate</li>
+            </ul>
+          </div>
+          <!-- Module 3 -->
+          <div class="bg-slate-950/70 border border-teal-500/20 rounded-xl p-3.5 space-y-1.5">
+            <div class="font-bold text-teal-300 flex items-center gap-1.5">
+              <span>Next.js API Handlers</span>
+              <span class="text-[9px] px-1.5 py-0.2 rounded bg-teal-900/50 text-teal-300">RESTful</span>
+            </div>
+            <ul class="text-[11px] text-slate-400 space-y-1">
+              <li>• /api/matches (Multi-Criteria Scorer)</li>
+              <li>• /api/swaps & /api/swaps/[id]/messages</li>
+              <li>• /api/wallet (Ledger & Audit Log)</li>
+              <li>• /api/ratings & /api/skills Registry</li>
+            </ul>
+          </div>
+          <!-- Module 4 -->
+          <div class="bg-slate-950/70 border border-teal-500/20 rounded-xl p-3.5 space-y-1.5">
+            <div class="font-bold text-teal-300 flex items-center gap-1.5">
+              <span>Security & Auth Guard</span>
+              <span class="text-[9px] px-1.5 py-0.2 rounded bg-teal-900/50 text-teal-300">Jose + Bcrypt</span>
+            </div>
+            <ul class="text-[11px] text-slate-400 space-y-1">
+              <li>• Tamper-Proof JWT Session Tokens</li>
+              <li>• HttpOnly Lax Secure Cookies</li>
+              <li>• Salted Bcrypt Password Storage</li>
+              <li>• Campus Domain Email Verification</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrow Bridge 2 -> 3 -->
+      <div class="flex items-center justify-center gap-3 text-xs font-mono text-slate-400">
+        <span>▼ Type-Safe Prisma Client Queries (SQL Prepared Statements)</span>
+        <span class="text-slate-600">|</span>
+        <span>▲ Relational Records & Foreign Key Integrity</span>
+      </div>
+
+      <!-- TIER 3: Persistence & Database Layer -->
+      <div class="rounded-2xl border-2 border-purple-500/30 bg-slate-900/90 p-5 shadow-lg relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-purple-500/20 text-purple-300 px-4 py-1 rounded-bl-xl text-xs font-bold font-mono tracking-wider border-l border-b border-purple-500/30">
+          TIER 3 • PERSISTENCE & DATA STORAGE LAYER
+        </div>
+        <div class="mb-4 flex items-center gap-2">
+          <div class="h-3 w-3 rounded-full bg-purple-500"></div>
+          <h2 class="text-base font-extrabold text-purple-200 tracking-wide uppercase">Prisma ORM 6 & Relational Database (SQLite / PostgreSQL)</h2>
+        </div>
+
+        <div class="grid grid-cols-6 gap-2.5 text-xs">
+          <div class="bg-slate-950/70 border border-purple-500/20 rounded-xl p-2.5 text-center">
+            <div class="font-bold text-purple-300">User</div>
+            <div class="text-[10px] text-slate-400 mt-1">Profile, Campus, Trust Score, Balances</div>
+          </div>
+          <div class="bg-slate-950/70 border border-purple-500/20 rounded-xl p-2.5 text-center">
+            <div class="font-bold text-purple-300">Skill & UserSkill</div>
+            <div class="text-[10px] text-slate-400 mt-1">Canonical Taxonomy, Offered/Wanted, Level</div>
+          </div>
+          <div class="bg-slate-950/70 border border-purple-500/20 rounded-xl p-2.5 text-center">
+            <div class="font-bold text-purple-300">Swap</div>
+            <div class="text-[10px] text-slate-400 mt-1">Session State, Agreed Credits, Schedule</div>
+          </div>
+          <div class="bg-slate-950/70 border border-purple-500/20 rounded-xl p-2.5 text-center">
+            <div class="font-bold text-purple-300">CreditTransaction</div>
+            <div class="text-[10px] text-slate-400 mt-1">Immutable Double-Entry Ledger & Escrow</div>
+          </div>
+          <div class="bg-slate-950/70 border border-purple-500/20 rounded-xl p-2.5 text-center">
+            <div class="font-bold text-purple-300">Rating & Review</div>
+            <div class="text-[10px] text-slate-400 mt-1">1-5 Stars, Text Feedback, Peer Index</div>
+          </div>
+          <div class="bg-slate-950/70 border border-purple-500/20 rounded-xl p-2.5 text-center">
+            <div class="font-bold text-purple-300">Message & Alert</div>
+            <div class="text-[10px] text-slate-400 mt-1">In-App Chat, Notifications, Verification</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer metadata -->
+    <div class="flex items-center justify-between text-[11px] text-slate-500 border-t border-slate-800 pt-3">
+      <span>SkillSwap Peer-to-Peer Educational Platform • System Architecture Specification</span>
+      <span class="font-mono">Figure 5.4: Multi-Tier Architectural Topology</span>
+    </div>
+
+  </div>
+</body>
+</html>
